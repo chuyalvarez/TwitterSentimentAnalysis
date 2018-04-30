@@ -1,33 +1,99 @@
+# coding: utf-8 
 import tweepy
 import config
+from resources import stopWordsEN,positive,negative
+import re
 from tweepy import OAuthHandler
- 
  
 auth = OAuthHandler(config.consumer_key, config.consumer_secret)
 auth.set_access_token(config.access_token, config.access_secret)
- 
 api = tweepy.API(auth)
 
-
-uid = 0
+query='anaya'
+file = open("tweets"+query+".txt","w")
+tid = 0
 #read a user timeline, set amount of tweets
-for tweet in api.user_timeline(screen_name='tha_rami',count=1,include_rts=True):
-    # Process a single status
-	print(tweet._json)
-	uid=tweet.user.id
-	print()
+'''
+for tweet in api.user_timeline(screen_name=query,count=3,include_rts=True):
+	tid=tweet.id
+	for tweetResponse in tweepy.Cursor(api.search,q=query+ "-filter:retweets",tweet_mode="extended",include_rts=False).items(300):
+		if (tid==tweetResponse.in_reply_to_status_id):
+			text=tweetResponse.full_text.lower()
+			string=""
+			
+			print ("https://twitter.com/"+str(tweetResponse.user.screen_name)+"/status/"+str(tweetResponse.id))
+			
+			for word in text.split():
+				if not (word[0]=="#" or word[0]=="@"):
+					if word not in stopWords:
+						string+=word+" "
+			
+			string=re.sub(r'[^\w\s]','',string)
+			#print (tweetResponse.entities['hashtags'])
+			print (string)
+			#file.write(text.lower())
+			print("--------------------------------")
+			
+'''
+			
+			
+for tweetResponse in tweepy.Cursor(api.search,q=query+ "-filter:retweets",tweet_mode="extended",include_rts=False,lang='es').items(500):
+		#if (tid==tweetResponse.in_reply_to_status_id):
+		text=tweetResponse.full_text.lower()
+		string=""
+		useful = False
+		neg = False
+		
 	
+		print ("https://twitter.com/"+str(tweetResponse.user.screen_name)+"/status/"+str(tweetResponse.id))
+		text = text.replace(query,'')
+		for word in text.split():
+			if word in negative:
+				neg=True
+			if word in positive:
+				useful = True
+
+			if not (word[0]=="#" or word[0]=="@"):
+				if not "http" in word:
+					#if word not in (stopWordsEN ):
+					string+=word+" "
+		
+		string=re.sub(r'[^\w\s]','',string)
+		'''
+		if tweetResponse.place:
+			print('	'+tweetResponse.place.name)
+			print('	'+tweetResponse.place.place_type)
+			print('	'+tweetResponse.place.country_code)
+			print(tweetResponse.place.contained_within)
+		print (tweetResponse.entities['hashtags'])
+		'''
+		print (string)
+		if useful:
+			file.write("https://twitter.com/"+str(tweetResponse.user.screen_name)+"/status/"+str(tweetResponse.id)+"\n")
+			file.write(string+",1\n")
+		if neg:
+			file.write("https://twitter.com/"+str(tweetResponse.user.screen_name)+"/status/"+str(tweetResponse.id)+"\n")
+			file.write(string+",-1\n")
+		#print("--------------------------------")
+
+file.close()
+	
+'''
+
+text = ""
 print("tweets with MENTION of")
-for tweety in tweepy.Cursor(api.search,q="tha_rami",tweet_mode="extended").items(100):
-	if tweety.in_reply_to_user_id==uid: 
-		print("	"+tweety.full_text)
-		if tweety.place:
-			print(tweety.place.full_name)
-
-#Get own tweets
-#for tweet in tweepy.Cursor(api.user_timeline).items():
-#    print(json.dumps(tweet._json))
-
+for tweety in tweepy.Cursor(api.search,q=query,tweet_mode="extended",include_rts=False).items(1):
+#for tweety in api.user_timeline(screen_name='tha_rami',count=20,include_rts=False):
+	#if tweety.in_reply_to_user_id==uid: 
+	text=tweety.full_text
+	if not (text[0]=="R" and text[1]=="T" and text[2]==" "):
+		
+		print ("https://twitter.com/"+str(tweety.user.screen_name)+"/status/"+str(tweety.id))
+		print (tweety.retweeted)
+		print(text.lower())
+		print("--------------------------------")
+'''
+		
 
 
 
