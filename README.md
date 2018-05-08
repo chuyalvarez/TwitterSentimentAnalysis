@@ -49,9 +49,9 @@ In the repository there are two folders TSADB2018 has the twitter mining section
     - streamer.py is the main program, by running that the twitter account will be listening and once it is tweeted to it, it will mine and give a result about the analyzed tweets.
     - pseudoSorter.py uses resources.py to organize tweets into categories in order to sort them and use them to train the model, the files are saved in the different folders. if you wish to use this for your own topic you can use this to mine and categorize the tweets of a topic.
    * 2 .csv files
-    - these files store the mined tweets in a csv to handle with pandas, minedtweets.csv has the tweets that are mined during streamer.py execution and sortedtweets.csv store tweets intended for training and testing.
+     - these files store the mined tweets in a csv to handle with pandas, minedtweets.csv has the tweets that are mined during streamer.py execution and sortedtweets.csv store tweets intended for training and testing.
    * A .txt file
-    - This is used as a reference for the tweet structure mined by tweepy if need to use another parameter.
+     - This is used as a reference for the tweet structure mined by tweepy if need to use another parameter.
     
 # Running
 Make sure you have all dependencies installed and the config.py file set up and just run streamer.py and you are good to go.
