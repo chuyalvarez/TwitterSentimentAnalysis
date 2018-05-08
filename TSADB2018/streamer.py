@@ -97,7 +97,7 @@ def analyzeSentiment(info,gameToAnalyze):
 	print("@{} the game {} has a review of {:.2f}% of positive reviews and {:.2f}% of negatives from {} tweets analyzed".format(username,gameToAnalyze,posperc,negperc,tot+c[0]))
 	api.update_status("@{} the game {} has a positive review percentage of {:.2f}% and a negative review percentage of {:.2f}% from {} tweets analyzed".format(username,gameToAnalyze,posperc,negperc,tot+c[0]),tweetId)
 
-	client = pymongo.MongoClient("mongodb+srv://Luly:Drama123Llama88@twittersa-1herf.mongodb.net/test")
+	client = pymongo.MongoClient(config.mongo_url)
 	db = client.test
 	colnames= db.collection_names()
 	if gameToAnalyze in colnames:
