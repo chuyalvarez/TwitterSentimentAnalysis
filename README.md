@@ -58,6 +58,8 @@ In the repository there is a folders TSADB2018 that has the twitter mining secti
 # Running
 Make sure you have all dependencies installed and the config.py file set up and just run streamer.py and you are good to go. After running the file, a model will be trained using the sorted tweets and a accuracy will be returned, you can re-run the program to train the model again and get a different accuracy, you can do this until you achieve an accuracy you are comfortable with.
 
+After using streamer.py you can use page.py to create a local webpage with the classified tweets into a google map that has its sentiment and the place where it was tweeted from.
+
 # Dependencies
 
 These are libraries or software that the project uses and make it easy to implement.
